@@ -1,0 +1,36 @@
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  background: #fff;
+  border-bottom: 1px solid #eee;
+  z-index: 100;
+  padding: 0.5rem 0;
+}
+
+.langSwitch {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-right: 2rem;
+  list-style: none;
+}
+
+.langSwitch li a {
+  text-decoration: none;
+  color: #222;
+  font-weight: 500;
+  padding: 0.3rem 0.8rem;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+
+.langSwitch li a:hover {
+  background: #f0f0f0;
+}
+
+.active {
+  background: #111;
+  color: #fff;
+}

@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import styles from './home.module.css';
 
 export default async function HomePage({
@@ -15,7 +16,9 @@ export default async function HomePage({
         <h1 className={styles.title}>{messages.home.title}</h1>
         <h2 className={styles.subtitle}>{messages.home.subtitle}</h2>
         <p className={styles.description}>{messages.home.description}</p>
-        <button className={styles.cta}>{messages.home.cta}</button>
+        <Link href={`/${locale}/login`} className={styles.cta}>
+          {messages.home.cta}
+        </Link>
       </section>
     </main>
   );

@@ -17,5 +17,39 @@
     "getStarted": "Comenzar",
     "selectLanguage": "Selecciona tu idioma",
     "continue": "Continuar"
+  },
+  "auth": {
+    "login": {
+      "title": "¡Bienvenido!",
+      "subtitle": "Inicia sesión para continuar tu viaje de aprendizaje",
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "submit": "Iniciar Sesión",
+      "noAccount": "¿No tienes una cuenta?",
+      "signUpLink": "Regístrate",
+      "forgotPassword": "¿Olvidaste tu contraseña?",
+      "orContinueWith": "O continúa con",
+      "google": "Continuar con Google"
+    },
+    "signup": {
+      "title": "Crea tu cuenta",
+      "subtitle": "Comienza a mejorar tu pronunciación hoy",
+      "name": "Nombre completo",
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "confirmPassword": "Confirmar contraseña",
+      "submit": "Crear Cuenta",
+      "hasAccount": "¿Ya tienes una cuenta?",
+      "loginLink": "Inicia sesión",
+      "orContinueWith": "O continúa con",
+      "google": "Continuar con Google"
+    }
+  },
+  "welcome": {
+    "title": "Bienvenido al Método Shadowing"
+  },
+  "notifications": {
+    "emailSent": "¡Éxito! Se ha enviado un correo de confirmación a",
+    "checkInbox": "Por favor revisa tu bandeja de entrada"
   }
 }

@@ -17,6 +17,12 @@
   margin: 0 auto;
 }
 
+.rightSection {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
 .logo h2 {
   margin: 0;
   font-size: 1.25rem;

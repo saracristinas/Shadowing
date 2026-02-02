@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import { locales } from '@/lib/i18n';
 import Header from '@/components/Header/Header';
+import { AuthProvider } from '@/lib/auth-context';
 
 export default async function LocaleLayout({
   children,
@@ -18,8 +19,10 @@ export default async function LocaleLayout({
   return (
     <html lang={locale}>
       <body>
-        <Header />
-        {children}
+        <AuthProvider>
+          <Header />
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );

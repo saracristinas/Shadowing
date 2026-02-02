@@ -1,0 +1,68 @@
+.languageSelector {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.languageButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: white;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.languageButton:hover {
+  border-color: #000;
+  background: #f9fafb;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.languageButton.selected {
+  border-color: #2563eb;
+  background: #eff6ff;
+  color: #2563eb;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+}
+
+.flag {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.name {
+  font-size: 1rem;
+}
+
+@media (max-width: 640px) {
+  .languageSelector {
+    flex-direction: column;
+    gap: 0.75rem;
+    width: 100%;
+  }
+
+  .languageButton {
+    width: 100%;
+    justify-content: center;
+    padding: 1rem 1.5rem;
+  }
+
+  .flag {
+    font-size: 1.75rem;
+  }
+
+  .name {
+    font-size: 1.1rem;
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "home": {
+    "title": "Plataforma de Shadowing",
+    "subtitle": "Melhore sua pronúncia com IA",
+    "description": "Pratique falando imitando falantes nativos. Receba feedback instantâneo e acompanhe seu progresso.",
+    "cta": "Começar Shadowing"
+  },
+  "nav": {
+    "home": "Início",
+    "videos": "Vídeos",
+    "progress": "Progresso"
+  },
+  "landing": {
+    "title": "Plataforma de Shadowing",
+    "subtitle": "Melhore sua pronúncia com IA",
+    "description": "Pratique falando imitando falantes nativos. Receba feedback instantâneo e acompanhe seu progresso.",
+    "getStarted": "Começar",
+    "selectLanguage": "Selecione seu idioma",
+    "continue": "Continuar"
+  }
+}

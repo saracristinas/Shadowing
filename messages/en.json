@@ -9,5 +9,13 @@
     "home": "Home",
     "videos": "Videos",
     "progress": "Progress"
+  },
+  "landing": {
+    "title": "Shadowing Platform",
+    "subtitle": "Improve your pronunciation with AI",
+    "description": "Practice speaking by shadowing native speakers. Get instant feedback and track your progress.",
+    "getStarted": "Get Started",
+    "selectLanguage": "Select your language",
+    "continue": "Continue"
   }
 }

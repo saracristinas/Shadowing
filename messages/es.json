@@ -9,5 +9,13 @@
     "home": "Inicio",
     "videos": "Videos",
     "progress": "Progreso"
+  },
+  "landing": {
+    "title": "Plataforma de Shadowing",
+    "subtitle": "Mejora tu pronunciación con IA",
+    "description": "Practica hablando imitando a hablantes nativos. Obtén retroalimentación instantánea y sigue tu progreso.",
+    "getStarted": "Comenzar",
+    "selectLanguage": "Selecciona tu idioma",
+    "continue": "Continuar"
   }
 }

@@ -1,0 +1,117 @@
+.languageSwitcher {
+  position: relative;
+}
+
+.trigger {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: transparent;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 1.25rem;
+}
+
+.trigger:hover {
+  background: #f9fafb;
+  border-color: #d1d5db;
+}
+
+.icon {
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.currentFlag {
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  background: white;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  min-width: 180px;
+  z-index: 1000;
+  animation: slideDown 0.2s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.875rem 1.25rem;
+  background: white;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  text-align: left;
+  font-size: 1rem;
+  color: #1f2937;
+}
+
+.option:hover {
+  background: #f3f4f6;
+}
+
+.option.active {
+  background: #eff6ff;
+  color: #2563eb;
+  font-weight: 600;
+}
+
+.option .flag {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.option .name {
+  font-size: 1rem;
+}
+
+@media (max-width: 640px) {
+  .trigger {
+    padding: 0.4rem 0.75rem;
+  }
+
+  .icon,
+  .currentFlag {
+    font-size: 1.1rem;
+  }
+
+  .dropdown {
+    min-width: 160px;
+  }
+
+  .option {
+    padding: 0.75rem 1rem;
+  }
+
+  .option .flag {
+    font-size: 1.3rem;
+  }
+
+  .option .name {
+    font-size: 0.95rem;
+  }
+}

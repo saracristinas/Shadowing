@@ -14,11 +14,14 @@ import {
   Menu,
   X,
   LogOut,
+  Layers,
+  Settings,
 } from 'lucide-react';
 
 const menuItems = [
   { id: 'home', label: 'Home', icon: Home, href: '/platform' },
   { id: 'library', label: 'Biblioteca', icon: BookOpen, href: '/platform/library' },
+  { id: 'levels', label: 'Níveis', icon: Layers, href: '/platform/levels' },
   { id: 'community', label: 'Comunidade', icon: Users, href: '/platform/community' },
   { id: 'progress', label: 'Progresso', icon: BarChart3, href: '/platform/progress' },
 ];
@@ -139,6 +142,27 @@ export default function PlatformLayout({ children }: PlatformLayoutProps) {
             );
           })}
         </nav>
+
+        {/* Settings Link */}
+        <div className="p-4 border-t border-white/5">
+          <Link
+            href="/platform/settings"
+            className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all relative group ${
+              pathname === '/platform/settings'
+                ? 'bg-gradient-to-r from-purple-600/20 to-pink-600/20 text-white'
+                : 'text-slate-400 hover:bg-white/5 hover:text-white'
+            }`}
+          >
+            <Settings className="w-5 h-5" />
+            <span className="font-medium">Configurações</span>
+            {pathname === '/platform/settings' && (
+              <motion.div
+                layoutId="activeTab"
+                className="ml-auto w-1.5 h-1.5 rounded-full bg-purple-400"
+              />
+            )}
+          </Link>
+        </div>
 
         {/* User Section */}
         <div className="p-4 border-t border-white/5">

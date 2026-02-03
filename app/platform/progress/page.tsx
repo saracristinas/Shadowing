@@ -9,19 +9,25 @@ import {
   Flame,
   Trophy,
   Target,
+  Clock,
+  Calendar,
+  Award,
+  Zap,
 } from 'lucide-react';
 import { useData } from '@/lib/data-context';
+import XPBar from '@/components/gamification/XPBar';
+import AchievementBadge from '@/components/gamification/AchievementBadge';
 
 export default function ProgressPage() {
-  const { contents, userProgress } = useData();
+  const { contents, userProgress, userStats, achievements } = useData();
 
   const stats = useMemo(() => {
     const completed = userProgress.filter((p) => p.completed).length;
     const total = contents.length;
     const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
 
-    // Simular sequência de dias
-    const streak = 7;
+    // Usar sequência real
+    const streak = userStats.current_streak;
 
     // Progresso por idioma
     const byLanguage = {
@@ -177,15 +183,75 @@ export default function ProgressPage() {
         </p>
       </motion.div>
 
-      {hasProgress ? (
-        <>
-          {/* Stats Cards */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8"
-          >
+      {/* XP Bar */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.1 }}
+        className="mb-10"
+      >
+        <XPBar currentXP={userStats.total_xp} level={userStats.level} />
+      </motion.div>
+
+      {/* Extended Stats Cards */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.15 }}
+        className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10"
+      >
+        {/* Tempo Total */}
+        <div className="glass-card rounded-2xl p-5">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-600 to-blue-600 bg-opacity-20 flex items-center justify-center mb-3">
+            <Clock className="w-5 h-5 text-cyan-400" />
+          </div>
+          <div className="text-2xl font-bold text-white mb-1">
+            {Math.floor(userStats.total_study_time / 60)}h {userStats.total_study_time % 60}m
+          </div>
+          <div className="text-sm text-slate-400">Tempo de Estudo</div>
+        </div>
+
+        {/* Sequência Atual */}
+        <div className="glass-card rounded-2xl p-5">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-600 to-red-600 bg-opacity-20 flex items-center justify-center mb-3">
+            <Flame className="w-5 h-5 text-orange-400" />
+          </div>
+          <div className="text-2xl font-bold text-white mb-1">
+            {userStats.current_streak}
+          </div>
+          <div className="text-sm text-slate-400">Dias Seguidos</div>
+        </div>
+
+        {/* Sequência Mais Longa */}
+        <div className="glass-card rounded-2xl p-5">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-600 to-orange-600 bg-opacity-20 flex items-center justify-center mb-3">
+            <Award className="w-5 h-5 text-amber-400" />
+          </div>
+          <div className="text-2xl font-bold text-white mb-1">
+            {userStats.longest_streak}
+          </div>
+          <div className="text-sm text-slate-400">Recorde de Dias</div>
+        </div>
+
+        {/* XP Total */}
+        <div className="glass-card rounded-2xl p-5">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-600 to-pink-600 bg-opacity-20 flex items-center justify-center mb-3">
+            <Zap className="w-5 h-5 text-purple-400" />
+          </div>
+          <div className="text-2xl font-bold text-white mb-1">
+            {userStats.total_xp}
+          </div>
+          <div className="text-sm text-slate-400">XP Total</div>
+        </div>
+      </motion.div>
+
+      {/* Stats Cards */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+        className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10"
+      >
             {statCards.map((stat, index) => (
               <motion.div
                 key={stat.label}
@@ -212,7 +278,7 @@ export default function ProgressPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="glass-card rounded-2xl p-6 mb-8"
+            className="glass-card rounded-2xl p-6 mb-10"
           >
             <h2 className="text-2xl font-bold text-white mb-6">
               Progresso por Idioma
@@ -258,6 +324,7 @@ export default function ProgressPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
+            className="mb-10"
           >
             <h2 className="text-2xl font-bold text-white mb-6">
               Progresso por Nível
@@ -310,30 +377,127 @@ export default function ProgressPage() {
               })}
             </div>
           </motion.div>
-        </>
-      ) : (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center py-20"
-        >
-          <div className="w-20 h-20 rounded-full bg-slate-800 flex items-center justify-center mx-auto mb-4">
-            <TrendingUp className="w-8 h-8 text-slate-600" />
-          </div>
-          <h3 className="text-xl font-semibold text-white mb-2">
-            Comece sua jornada
-          </h3>
-          <p className="text-slate-400 mb-6 max-w-md mx-auto">
-            Complete conteúdos da biblioteca para acompanhar seu progresso e evolução
-          </p>
-          <a
-            href="/platform/library"
-            className="inline-flex h-12 px-6 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-medium items-center gap-2 transition-all"
+
+          {/* Idioma Favorito & Última Atividade */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.35 }}
+            className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10"
           >
-            Explorar Conteúdos
-          </a>
-        </motion.div>
-      )}
+            {/* Idioma Favorito */}
+            <div className="glass-card rounded-2xl p-6">
+              <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                <Trophy className="w-5 h-5 text-yellow-400" />
+                Idioma Favorito
+              </h3>
+              <div className="flex items-center gap-4">
+                <div className="text-6xl">
+                  {userStats.favorite_language === 'english' && '🇺🇸'}
+                  {userStats.favorite_language === 'spanish' && '🇪🇸'}
+                  {userStats.favorite_language === 'portuguese' && '🇧🇷'}
+                  {!userStats.favorite_language && '🌍'}
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-white mb-1">
+                    {userStats.favorite_language === 'english' && 'Inglês'}
+                    {userStats.favorite_language === 'spanish' && 'Espanhol'}
+                    {userStats.favorite_language === 'portuguese' && 'Português'}
+                    {!userStats.favorite_language && 'Nenhum ainda'}
+                  </div>
+                  <div className="text-sm text-slate-400">
+                    {userStats.favorite_language 
+                      ? 'Seu idioma mais estudado' 
+                      : 'Complete conteúdos para definir'}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Última Atividade */}
+            <div className="glass-card rounded-2xl p-6">
+              <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                <Calendar className="w-5 h-5 text-blue-400" />
+                Última Atividade
+              </h3>
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-600 to-cyan-600 flex items-center justify-center">
+                  <Calendar className="w-8 h-8 text-white" />
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-white mb-1">
+                    {userStats.last_activity_date 
+                      ? new Date(userStats.last_activity_date).toLocaleDateString('pt-BR', { 
+                          day: '2-digit', 
+                          month: 'short' 
+                        })
+                      : 'Nunca'}
+                  </div>
+                  <div className="text-sm text-slate-400">
+                    {userStats.last_activity_date
+                      ? `${Math.floor((Date.now() - new Date(userStats.last_activity_date).getTime()) / (1000 * 60 * 60 * 24))} dias atrás`
+                      : 'Comece a estudar hoje!'}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Achievements Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="mt-8"
+          >
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold text-white">
+                Conquistas
+              </h2>
+              <div className="text-sm text-slate-400">
+                {achievements.length} de 14 desbloqueadas
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+              {[
+                'first_content',
+                'streak_7',
+                'streak_30',
+                'complete_10',
+                'complete_50',
+                'complete_100',
+                'master_english',
+                'master_spanish',
+                'master_portuguese',
+                'beginner_complete',
+                'intermediate_complete',
+                'advanced_complete',
+                'community_star',
+                'early_bird',
+              ].map((type, index) => {
+                const isUnlocked = achievements.some(
+                  (a) => a.achievement_type === type
+                );
+
+                return (
+                  <motion.div
+                    key={type}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.5 + index * 0.05 }}
+                  >
+                    <AchievementBadge
+                      type={type}
+                      unlocked={isUnlocked}
+                      size="lg"
+                      showDetails={true}
+                    />
+                  </motion.div>
+                );
+              })}
+            </div>
+          </motion.div>
     </div>
   );
 }

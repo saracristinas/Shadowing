@@ -23,11 +23,9 @@ export default function LanguageSwitcher() {
 
   const handleLanguageChange = (code: string) => {
     if (isAuthenticated) {
-      // Se está logado, mantém a página atual e só troca o idioma
       const newPath = pathname.replace(`/${locale}`, `/${code}`);
       router.push(newPath);
     } else {
-      // Se não está logado, volta para a página inicial
       router.push(`/${code}`);
     }
     setIsOpen(false);

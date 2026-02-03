@@ -46,7 +46,6 @@ interface DataContextType {
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
 
-// Dados de exemplo iniciais
 const initialContents: Content[] = [
   {
     id: '1',

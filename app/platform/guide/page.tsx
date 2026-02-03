@@ -49,24 +49,42 @@ const videos: GuideVideo[] = [
   },
   {
     id: '4',
-    title: 'Estudando no Nível A1-A2',
-    description: 'Dicas para iniciantes e básico',
+    title: 'Estudando no Nível A1',
+    description: 'Dicas para iniciantes',
     duration: '10:20',
-    thumbnail: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800',
+    thumbnail: '/levels/level-a1.png',
     videoUrl: 'https://www.youtube.com/watch?v=...',
     category: 'niveis',
   },
   {
     id: '5',
-    title: 'Estudando no Nível B1-B2',
-    description: 'Estratégias para intermediário e avançado',
-    duration: '12:10',
-    thumbnail: 'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800',
+    title: 'Estudando no Nível A2',
+    description: 'Evoluindo do básico',
+    duration: '11:15',
+    thumbnail: '/levels/level-a2.png',
     videoUrl: 'https://www.youtube.com/watch?v=...',
     category: 'niveis',
   },
   {
     id: '6',
+    title: 'Estudando no Nível B1',
+    description: 'Alcançando a independência',
+    duration: '12:10',
+    thumbnail: '/levels/level-b1.png',
+    videoUrl: 'https://www.youtube.com/watch?v=...',
+    category: 'niveis',
+  },
+  {
+    id: '7',
+    title: 'Estudando no Nível B2',
+    description: 'Dominando o idioma',
+    duration: '13:20',
+    thumbnail: '/levels/level-b2.png',
+    videoUrl: 'https://www.youtube.com/watch?v=...',
+    category: 'niveis',
+  },
+  {
+    id: '8',
     title: 'Sistema de XP e Conquistas',
     description: 'Como funciona a gamificação',
     duration: '7:30',
@@ -75,7 +93,7 @@ const videos: GuideVideo[] = [
     category: 'recursos',
   },
   {
-    id: '7',
+    id: '9',
     title: 'Dicas de Pronúncia',
     description: 'Técnicas para melhorar sua pronúncia',
     duration: '9:40',
@@ -84,7 +102,7 @@ const videos: GuideVideo[] = [
     category: 'dicas',
   },
   {
-    id: '8',
+    id: '10',
     title: 'Organização de Estudos',
     description: 'Crie uma rotina eficiente de aprendizado',
     duration: '11:25',
@@ -179,7 +197,7 @@ export default function GuidePage() {
                 <img
                   src={video.thumbnail}
                   alt={video.title}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110"
                 />
                 
                 {/* Overlay */}

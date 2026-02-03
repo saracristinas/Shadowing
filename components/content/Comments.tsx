@@ -32,7 +32,6 @@ export default function Comments({ contentId, contentType }: CommentsProps) {
   const storageKey = `comments_${contentType}_${contentId}`;
 
   useEffect(() => {
-    // Carregar comentários do localStorage
     const savedComments = localStorage.getItem(storageKey);
     if (savedComments) {
       setComments(JSON.parse(savedComments));

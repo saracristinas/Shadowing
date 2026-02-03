@@ -11,7 +11,6 @@ export default function UserMenu() {
   const { user, logout } = useAuth();
   const router = useRouter();
 
-  // Fechar dropdown ao clicar fora
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {

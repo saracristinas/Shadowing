@@ -31,7 +31,6 @@ export default function Notes({ contentId, contentType, contentTitle }: NotesPro
   const storageKey = 'all_notes';
 
   useEffect(() => {
-    // Carregar todas as anotações e filtrar por contentId
     const savedNotes = localStorage.getItem(storageKey);
     if (savedNotes) {
       const allNotes: Note[] = JSON.parse(savedNotes);
@@ -43,16 +42,13 @@ export default function Notes({ contentId, contentType, contentTitle }: NotesPro
   }, [contentId, contentType]);
 
   const saveNotes = (updatedNotes: Note[]) => {
-    // Salvar no storage global
     const savedNotes = localStorage.getItem(storageKey);
     const allNotes: Note[] = savedNotes ? JSON.parse(savedNotes) : [];
     
-    // Remover notas antigas deste conteúdo
     const otherNotes = allNotes.filter(
       n => !(n.contentId === contentId && n.contentType === contentType)
     );
     
-    // Adicionar notas atualizadas
     const newAllNotes = [...otherNotes, ...updatedNotes];
     localStorage.setItem(storageKey, JSON.stringify(newAllNotes));
     setNotes(updatedNotes);

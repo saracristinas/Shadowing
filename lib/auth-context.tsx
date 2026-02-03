@@ -22,7 +22,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    // Verificar se há usuário logado ao carregar
     const storedUser = localStorage.getItem('currentUser');
     if (storedUser) {
       setUser(JSON.parse(storedUser));
@@ -30,22 +29,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const signup = (name: string, email: string, password: string, photoUrl?: string): boolean => {
-    // Buscar usuários existentes
     const usersData = localStorage.getItem('users');
     const users = usersData ? JSON.parse(usersData) : [];
 
-    // Verificar se email já existe
     const emailExists = users.some((u: any) => u.email === email);
     if (emailExists) {
       return false;
     }
 
-    // Criar novo usuário
     const newUser = { name, email, password, photoUrl };
     users.push(newUser);
     localStorage.setItem('users', JSON.stringify(users));
 
-    // Fazer login automaticamente
     const userData = { name, email, photoUrl };
     setUser(userData);
     localStorage.setItem('currentUser', JSON.stringify(userData));
@@ -54,11 +49,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const login = (email: string, password: string): boolean => {
-    // Buscar usuários
     const usersData = localStorage.getItem('users');
     const users = usersData ? JSON.parse(usersData) : [];
 
-    // Verificar credenciais
     const user = users.find(
       (u: any) => u.email === email && u.password === password
     );

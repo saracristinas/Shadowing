@@ -15,12 +15,18 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async session({ session, token }) {
       if (session.user) {
         session.user.id = token.sub as string;
+        session.user.image = token.picture as string;
       }
       return session;
     },
-    async jwt({ token, user }) {
+    async jwt({ token, user, account, profile }) {
       if (user) {
         token.sub = user.id;
+        token.picture = user.image;
+      }
+      // Quando loga com Google, pega a foto do profile
+      if (profile?.picture) {
+        token.picture = profile.picture;
       }
       return token;
     },

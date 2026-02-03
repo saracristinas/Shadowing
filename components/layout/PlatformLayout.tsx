@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
+import { useSession, signOut } from 'next-auth/react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -16,10 +16,13 @@ import {
   LogOut,
   Layers,
   Settings,
+  GraduationCap,
+  BookMarked,
 } from 'lucide-react';
 
 const menuItems = [
   { id: 'home', label: 'Home', icon: Home, href: '/platform' },
+  { id: 'guide', label: 'Guia', icon: GraduationCap, href: '/platform/guide' },
   { id: 'library', label: 'Biblioteca', icon: BookOpen, href: '/platform/library' },
   { id: 'levels', label: 'Níveis', icon: Layers, href: '/platform/levels' },
   { id: 'community', label: 'Comunidade', icon: Users, href: '/platform/community' },
@@ -35,68 +38,22 @@ export default function PlatformLayout({ children }: PlatformLayoutProps) {
   const router = useRouter();
   const { data: session, status } = useSession();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  const [user, setUser] = useState<{ name: string; email: string } | null>(null);
 
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 1024);
-    };
-
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
-  useEffect(() => {
-    // Verificar sessão do NextAuth primeiro
-    if (status === 'authenticated' && session?.user) {
-      setUser({
-        name: session.user.name || 'Usuário',
-        email: session.user.email || '',
-      });
-      // Salvar no localStorage também para compatibilidade
-      localStorage.setItem('currentUser', JSON.stringify({
-        id: session.user.email,
-        name: session.user.name,
-        email: session.user.email,
-      }));
-      return;
-    }
-
-    // Se não tiver sessão NextAuth, verificar localStorage (login manual)
-    const storedUser = localStorage.getItem('currentUser');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    } else if (status === 'unauthenticated') {
-      // Só redireciona se tiver certeza que não está autenticado
-      router.push('/pt/login');
-    }
-  }, [session, status, router]);
-
-  const handleLogout = async () => {
-    localStorage.removeItem('currentUser');
-    
-    // Se estiver logado com NextAuth, fazer signOut
-    if (session) {
-      const { signOut } = await import('next-auth/react');
-      await signOut({ callbackUrl: '/pt/login' });
-    } else {
-      router.push('/pt/login');
-    }
-  };
-
-  // Mostrar loading enquanto verifica autenticação
-  if (status === 'loading' || !user) {
+  if (status === 'loading') {
     return (
       <div className="min-h-screen bg-slate-950 flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-16 h-16 rounded-full border-4 border-purple-600/20 border-t-purple-600 animate-spin mx-auto mb-4" />
-          <p className="text-slate-400">Carregando...</p>
-        </div>
+        <div className="w-16 h-16 rounded-full border-4 border-purple-600/20 border-t-purple-600 animate-spin" />
       </div>
     );
   }
+
+  // Not authenticated
+  if (!session) {
+    router.push('/pt/login');
+    return null;
+  }
+
+  const user = session.user;
 
   return (
     <div className="min-h-screen bg-slate-950">
@@ -143,6 +100,27 @@ export default function PlatformLayout({ children }: PlatformLayoutProps) {
           })}
         </nav>
 
+        {/* Notes Link */}
+        <div className="p-4 border-t border-white/5">
+          <Link
+            href="/platform/notes"
+            className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all relative group ${
+              pathname === '/platform/notes'
+                ? 'bg-gradient-to-r from-purple-600/20 to-pink-600/20 text-white'
+                : 'text-slate-400 hover:bg-white/5 hover:text-white'
+            }`}
+          >
+            <BookMarked className="w-5 h-5" />
+            <span className="font-medium">Anotações</span>
+            {pathname === '/platform/notes' && (
+              <motion.div
+                layoutId="activeTab"
+                className="ml-auto w-1.5 h-1.5 rounded-full bg-purple-400"
+              />
+            )}
+          </Link>
+        </div>
+
         {/* Settings Link */}
         <div className="p-4 border-t border-white/5">
           <Link
@@ -167,15 +145,28 @@ export default function PlatformLayout({ children }: PlatformLayoutProps) {
         {/* User Section */}
         <div className="p-4 border-t border-white/5">
           <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-white/5">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-600 to-pink-600 border-2 border-purple-500/30 flex items-center justify-center text-white font-bold">
-              {user.name.charAt(0).toUpperCase()}
-            </div>
+            {user?.image ? (
+              <img
+                src={user.image}
+                alt={user.name ?? 'User'}
+                referrerPolicy="no-referrer"
+                className="w-10 h-10 rounded-full object-cover border-2 border-purple-500/30"
+              />
+            ) : (
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-600 to-pink-600 border-2 border-purple-500/30 flex items-center justify-center text-white font-bold">
+                {user?.name?.[0]?.toUpperCase() ?? 'U'}
+              </div>
+            )}
             <div className="flex-1 min-w-0">
-              <div className="text-sm font-medium text-white truncate">{user.name}</div>
-              <div className="text-xs text-slate-500 truncate">{user.email}</div>
+              <div className="text-sm font-medium text-white truncate">
+                {user?.name ?? 'Usuário'}
+              </div>
+              <div className="text-xs text-slate-500 truncate">
+                {user?.email ?? ''}
+              </div>
             </div>
             <button
-              onClick={handleLogout}
+              onClick={() => signOut({ callbackUrl: '/pt/login' })}
               className="w-8 h-8 rounded-lg hover:bg-red-500/20 flex items-center justify-center transition-colors group"
               title="Sair"
             >

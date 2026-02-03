@@ -17,6 +17,8 @@ import {
 import LevelBadge from '@/components/ui/LevelBadge';
 import { useData } from '@/lib/data-context';
 import { formatDuration } from '@/lib/utils';
+import Notes from '@/components/content/Notes';
+import Comments from '@/components/content/Comments';
 
 export default function ContentViewPage() {
   const router = useRouter();
@@ -239,6 +241,25 @@ export default function ContentViewPage() {
           </div>
         </motion.div>
       )}
+
+      {/* Notes Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.5 }}
+        className="mb-6"
+      >
+        <Notes contentId={content.id} contentType="content" contentTitle={content.title} />
+      </motion.div>
+
+      {/* Comments Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.6 }}
+      >
+        <Comments contentId={content.id} contentType="content" />
+      </motion.div>
     </div>
   );
 }

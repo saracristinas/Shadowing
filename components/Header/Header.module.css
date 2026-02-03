@@ -3,8 +3,9 @@
   top: 0;
   left: 0;
   width: 100vw;
-  background: #fff;
-  border-bottom: 1px solid #eee;
+  background: rgba(2, 6, 23, 0.8);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   z-index: 100;
   padding: 1rem 2rem;
 }
@@ -27,7 +28,10 @@
   margin: 0;
   font-size: 1.25rem;
   font-weight: 600;
-  color: #111;
+  background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 @media (max-width: 768px) {

@@ -71,7 +71,7 @@
 }
 
 .option:hover {
-  background: #f3f4f6;
+  background: rgba(168, 85, 247, 0.2);
 }
 
 .option.active {

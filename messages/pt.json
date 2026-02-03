@@ -46,7 +46,27 @@
     }
   },
   "welcome": {
-    "title": "Seja bem-vindo ao Método Shadowing"
+    "title": "Escolha seu Nível",
+    "subtitle": "Selecione o nível que melhor se adequa ao seu conhecimento atual",
+    "viewVideos": "Ver Vídeos",
+    "levels": {
+      "a1": {
+        "title": "Iniciante",
+        "description": "Perfeito para quem está começando. Aprenda frases básicas e vocabulário essencial."
+      },
+      "a2": {
+        "title": "Básico",
+        "description": "Continue sua jornada com conversas simples do dia a dia e expressões comuns."
+      },
+      "b1": {
+        "title": "Intermediário",
+        "description": "Desenvolva sua fluência com tópicos mais complexos e situações variadas."
+      },
+      "b2": {
+        "title": "Intermediário Avançado",
+        "description": "Aperfeiçoe sua pronúncia com conteúdo avançado e discussões detalhadas."
+      }
+    }
   },
   "notifications": {
     "emailSent": "Sucesso! Um email de confirmação foi enviado para",

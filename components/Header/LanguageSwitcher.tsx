@@ -1,13 +1,16 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { useRouter, useParams } from 'next/navigation';
+import { useRouter, useParams, usePathname } from 'next/navigation';
+import { useAuth } from '@/lib/auth-context';
 import styles from './LanguageSwitcher.module.css';
 
 export default function LanguageSwitcher() {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const { locale } = useParams();
+  const pathname = usePathname();
+  const { isAuthenticated } = useAuth();
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const languages = [
@@ -19,7 +22,14 @@ export default function LanguageSwitcher() {
   const currentLanguage = languages.find(lang => lang.code === locale) || languages[0];
 
   const handleLanguageChange = (code: string) => {
-    router.push(`/${code}`);
+    if (isAuthenticated) {
+      // Se está logado, mantém a página atual e só troca o idioma
+      const newPath = pathname.replace(`/${locale}`, `/${code}`);
+      router.push(newPath);
+    } else {
+      // Se não está logado, volta para a página inicial
+      router.push(`/${code}`);
+    }
     setIsOpen(false);
   };
 

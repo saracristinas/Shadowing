@@ -4,64 +4,23 @@ import { useRouter, useParams, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import {
   ArrowLeft,
-  ArrowRightFromLine,
+  ArrowRight,
   ArrowLeftFromLine,
+  ArrowRightFromLine,
   CheckCircle2,
   Settings,
   ChevronDown,
   ChevronUp,
-  Search,
   List,
+  X,
 } from 'lucide-react';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import Comments from '@/components/content/Comments';
 import { allVideos } from '@/lib/guide-videos';
 
-/* ===================== MINI SIDEBAR ===================== */
-function MiniSidebar({
-  position,
-  onExpand,
-}: {
-  position: 'left' | 'right';
-  onExpand: () => void;
-}) {
-  return (
-    <aside
-      className={`
-        fixed top-[72px] h-[calc(100vh-72px)]
-        w-[56px] z-40
-        bg-slate-900 border-slate-800
-        flex flex-col items-center gap-2 py-4
-        ${position === 'left' ? 'left-0 border-r' : 'right-0 border-l'}
-      `}
-    >
-      <button
-        onClick={onExpand}
-        aria-label="Expandir lista"
-        className="w-10 h-10 rounded-lg flex items-center justify-center hover:bg-slate-800"
-      >
-        {position === 'left' ? (
-          <ArrowRightFromLine className="w-5 h-5 text-slate-200" />
-        ) : (
-          <ArrowLeftFromLine className="w-5 h-5 text-slate-200" />
-        )}
-      </button>
-
-      <button className="w-10 h-10 rounded-lg flex items-center justify-center hover:bg-slate-800">
-        <Search className="w-5 h-5 text-slate-400" />
-      </button>
-
-      <button className="w-10 h-10 rounded-lg flex items-center justify-center hover:bg-slate-800">
-        <List className="w-5 h-5 text-slate-400" />
-      </button>
-    </aside>
-  );
-}
-
-/* ===================== SIDEBAR EXPANDIDA ===================== */
+/* ===================== DESKTOP SIDEBAR ===================== */
 function ContentSidebar({
   videoId,
-  currentPlaylistIndex,
   expandedVideos,
   setExpandedVideos,
   sidebarPosition,
@@ -69,7 +28,6 @@ function ContentSidebar({
   setSidebarPosition,
 }: {
   videoId: string;
-  currentPlaylistIndex: number;
   expandedVideos: Set<string>;
   setExpandedVideos: (v: Set<string>) => void;
   sidebarPosition: 'left' | 'right';
@@ -77,76 +35,68 @@ function ContentSidebar({
   setSidebarPosition: (v: 'left' | 'right') => void;
 }) {
   const [settingsOpen, setSettingsOpen] = useState(false);
-  const settingsRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    function handleClickOutside(e: MouseEvent) {
-      if (settingsRef.current && !settingsRef.current.contains(e.target as Node)) {
-        setSettingsOpen(false);
-      }
-    }
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
 
   return (
     <aside
       className={`
-        fixed top-[72px] h-[calc(100vh-72px)] w-[420px]
-        bg-slate-900 border-slate-800 z-40 flex flex-col
-        ${sidebarPosition === 'left' ? 'left-0 border-r' : 'right-0 border-l'}
+        hidden lg:flex fixed top-[72px] h-[calc(100vh-72px)] w-[420px]
+        bg-slate-900 border-slate-800 z-40 flex-col
+        ${sidebarPosition === 'right' ? 'right-0 border-l' : 'left-0 border-r'}
       `}
     >
-      {/* HEADER */}
-      <div className="sticky top-0 z-20 bg-slate-900 border-b border-slate-700 px-5 py-4 flex justify-between">
+      <div className="sticky top-0 bg-slate-900 border-b border-slate-700 px-5 py-4 flex justify-between relative">
         <p className="font-bold text-white">Lista de Conteúdos</p>
 
-        <div className="flex gap-1 relative" ref={settingsRef}>
+        <div className="flex gap-1">
+          {/* ENGRENAGEM */}
           <button
             onClick={() => setSettingsOpen(v => !v)}
-            className="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-slate-800"
+            className="w-10 h-10 rounded-lg hover:bg-slate-800 flex items-center justify-center"
           >
             <Settings className="w-5 h-5 text-slate-300" />
           </button>
 
+          {/* MENU */}
           {settingsOpen && (
-            <div className="absolute right-0 top-12 bg-slate-800 border border-slate-700 rounded-xl p-2 w-44">
-              <p className="text-slate-400 px-2 py-1 text-sm">Posição da lista</p>
+            <div className="absolute right-0 top-14 bg-slate-800 border border-slate-700 rounded-lg p-2 w-40 z-50">
+              <p className="text-xs text-slate-400 px-2 mb-1">Posição da lista</p>
+
               <button
                 onClick={() => {
                   setSidebarPosition('left');
                   setSettingsOpen(false);
                 }}
-                className="w-full text-left px-3 py-2 rounded hover:bg-slate-700 text-sm"
+                className="w-full text-left px-3 py-2 rounded hover:bg-slate-700 text-sm text-white"
               >
                 Esquerda
               </button>
+
               <button
                 onClick={() => {
                   setSidebarPosition('right');
                   setSettingsOpen(false);
                 }}
-                className="w-full text-left px-3 py-2 rounded hover:bg-slate-700 text-sm"
+                className="w-full text-left px-3 py-2 rounded hover:bg-slate-700 text-sm text-white"
               >
                 Direita
               </button>
             </div>
           )}
 
+          {/* OCULTAR */}
           <button
             onClick={() => setSidebarCollapsed(true)}
-            className="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-slate-800"
+            className="w-10 h-10 rounded-lg hover:bg-slate-800 flex items-center justify-center"
           >
-            {sidebarPosition === 'left' ? (
-              <ArrowLeftFromLine className="w-5 h-5 text-slate-300" />
-            ) : (
+            {sidebarPosition === 'right' ? (
               <ArrowRightFromLine className="w-5 h-5 text-slate-300" />
+            ) : (
+              <ArrowLeftFromLine className="w-5 h-5 text-slate-300" />
             )}
           </button>
         </div>
       </div>
 
-      {/* LISTA */}
       <div className="flex-1 overflow-y-auto px-3 py-3 space-y-2">
         {allVideos.map(item => {
           const expanded = expandedVideos.has(item.id);
@@ -168,36 +118,128 @@ function ContentSidebar({
               >
                 <div className="flex justify-between items-center">
                   <span className="text-white text-sm">{item.title}</span>
-                  {expanded ? (
-                    <ChevronUp className="w-4 h-4 text-slate-400" />
-                  ) : (
-                    <ChevronDown className="w-4 h-4 text-slate-400" />
-                  )}
+                  {expanded ? <ChevronUp /> : <ChevronDown />}
                 </div>
               </button>
 
-              {expanded && item.playlist && (
-                <div className="ml-3 mt-1 space-y-1">
-                  {item.playlist.map((p, idx) => (
-                    <Link
-                      key={p.id}
-                      href={`/platform/guide/${item.id}?playlist=${idx}`}
-                      scroll={false}
-                      className={`block px-3 py-1.5 rounded text-xs ${
-                        active && idx === currentPlaylistIndex
-                          ? 'bg-purple-600/30 text-white'
-                          : 'bg-slate-900 hover:bg-slate-800 text-white'
-                      }`}
-                    >
-                      {p.title}
-                    </Link>
-                  ))}
-                </div>
-              )}
+              {expanded &&
+                item.playlist?.map((p, idx) => (
+                  <Link
+                    key={p.id}
+                    href={`/platform/guide/${item.id}?playlist=${idx}`}
+                    scroll={false}
+                    className="block ml-3 mt-1 px-3 py-1.5 rounded bg-slate-900 hover:bg-slate-800 text-xs text-white"
+                  >
+                    {p.title}
+                  </Link>
+                ))}
             </div>
           );
         })}
       </div>
+    </aside>
+  );
+}
+
+/* ===================== MOBILE DRAWER ===================== */
+function MobileDrawer({
+  open,
+  onClose,
+  videoId,
+  expandedVideos,
+  setExpandedVideos,
+}: {
+  open: boolean;
+  onClose: () => void;
+  videoId: string;
+  expandedVideos: Set<string>;
+  setExpandedVideos: (v: Set<string>) => void;
+}) {
+  if (!open) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 lg:hidden">
+      <div className="absolute inset-0 bg-black/60" onClick={onClose} />
+
+      <div className="absolute bottom-0 left-0 right-0 h-[85%] bg-slate-900 rounded-t-2xl p-4 overflow-y-auto">
+        <div className="flex justify-between mb-4">
+          <p className="text-white font-bold">Lista de Conteúdos</p>
+          <button onClick={onClose}>
+            <X className="w-6 h-6 text-slate-300" />
+          </button>
+        </div>
+
+        {allVideos.map(item => {
+          const expanded = expandedVideos.has(item.id);
+          const active = item.id === videoId;
+
+          return (
+            <div key={item.id} className="mb-2">
+              <button
+                onClick={() => {
+                  const next = new Set(expandedVideos);
+                  next.has(item.id) ? next.delete(item.id) : next.add(item.id);
+                  setExpandedVideos(next);
+                }}
+                className={`w-full px-3 py-2 rounded-lg border ${
+                  active
+                    ? 'bg-purple-600/20 border-purple-500/40'
+                    : 'bg-slate-800/40 border-slate-700'
+                }`}
+              >
+                <div className="flex justify-between">
+                  <span className="text-white text-sm">{item.title}</span>
+                  {expanded ? <ChevronUp /> : <ChevronDown />}
+                </div>
+              </button>
+
+              {expanded &&
+                item.playlist?.map((p, idx) => (
+                  <Link
+                    key={p.id}
+                    href={`/platform/guide/${item.id}?playlist=${idx}`}
+                    onClick={onClose}
+                    scroll={false}
+                    className="block ml-3 mt-1 px-3 py-1.5 rounded bg-slate-900 hover:bg-slate-800 text-xs text-white"
+                  >
+                    {p.title}
+                  </Link>
+                ))}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+/* ===================== MINI SIDEBAR (DESKTOP) ===================== */
+function DesktopMiniSidebar({
+  position,
+  onExpand,
+}: {
+  position: 'left' | 'right';
+  onExpand: () => void;
+}) {
+  return (
+    <aside
+      className={`
+        hidden lg:flex fixed top-[72px] h-[calc(100vh-72px)]
+        w-[56px] bg-slate-900 border-slate-800 z-40
+        flex-col items-center py-4
+        ${position === 'left' ? 'left-0 border-r' : 'right-0 border-l'}
+      `}
+    >
+      <button
+        onClick={onExpand}
+        className="w-10 h-10 rounded-lg hover:bg-slate-800 flex items-center justify-center"
+      >
+        {position === 'left' ? (
+          <ArrowRightFromLine className="w-5 h-5 text-slate-300" />
+        ) : (
+          <ArrowLeftFromLine className="w-5 h-5 text-slate-300" />
+        )}
+      </button>
     </aside>
   );
 }
@@ -209,60 +251,68 @@ export default function GuideVideoPage() {
   const searchParams = useSearchParams();
 
   const videoId = params.id as string;
+  const playlistIndex = Number(searchParams.get('playlist') ?? 0);
+
   const video = allVideos.find(v => v.id === videoId);
+  if (!video) return <div className="text-white">Vídeo não encontrado</div>;
 
-  const [mounted, setMounted] = useState(false);
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const [sidebarPosition, setSidebarPosition] = useState<'left' | 'right'>('left');
+  const playlist = video.playlist ?? [];
+  const currentVideo = playlist[playlistIndex] || video;
+
   const [expandedVideos, setExpandedVideos] = useState<Set<string>>(new Set());
-  const [currentPlaylistIndex, setCurrentPlaylistIndex] = useState(0);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [sidebarPosition, setSidebarPosition] =
+    useState<'left' | 'right'>('left');
+  const [mobileDrawer, setMobileDrawer] = useState(false);
 
-  useEffect(() => setMounted(true), []);
+  const [concludedVideos, setConcludedVideos] = useState<Set<string>>(new Set());
 
-  useEffect(() => {
-    const playlistParam = searchParams.get('playlist');
-    if (playlistParam) {
-      const index = Number(playlistParam);
-      if (!Number.isNaN(index)) setCurrentPlaylistIndex(index);
-    }
-  }, [searchParams]);
+  const contentKey = `${video.id}-${playlistIndex}`;
+  const concluded = concludedVideos.has(contentKey);
+  const currentVideoId = video.id;
 
-  if (!video) {
-    return <div className="text-white">Vídeo não encontrado</div>;
+  function toggleConcluded() {
+    const next = new Set(concludedVideos);
+    next.has(contentKey) ? next.delete(contentKey) : next.add(contentKey);
+    setConcludedVideos(next);
   }
 
-  const currentPlaylistItem = video.playlist?.[currentPlaylistIndex];
+  function goTo(index: number) {
+    if (index < 0 || index >= playlist.length) return;
+    router.push(`/platform/guide/${currentVideoId}?playlist=${index}`);
+  }
 
   return (
     <>
-      {mounted && sidebarCollapsed && (
-        <MiniSidebar
-          position={sidebarPosition}
-          onExpand={() => setSidebarCollapsed(false)}
-        />
-      )}
-
-      {mounted && !sidebarCollapsed && (
+      {!sidebarCollapsed ? (
         <ContentSidebar
           videoId={videoId}
-          currentPlaylistIndex={currentPlaylistIndex}
           expandedVideos={expandedVideos}
           setExpandedVideos={setExpandedVideos}
           sidebarPosition={sidebarPosition}
           setSidebarCollapsed={setSidebarCollapsed}
           setSidebarPosition={setSidebarPosition}
         />
+      ) : (
+        <DesktopMiniSidebar
+          position={sidebarPosition}
+          onExpand={() => setSidebarCollapsed(false)}
+        />
       )}
+
+      <MobileDrawer
+        open={mobileDrawer}
+        onClose={() => setMobileDrawer(false)}
+        videoId={videoId}
+        expandedVideos={expandedVideos}
+        setExpandedVideos={setExpandedVideos}
+      />
 
       <div
         className={`min-h-screen py-8 flex justify-center transition-all ${
           sidebarCollapsed
-            ? sidebarPosition === 'left'
-              ? 'pl-[72px]'
-              : 'pr-[72px]'
-            : sidebarPosition === 'left'
-            ? 'pl-[460px]'
-            : 'pr-[460px]'
+            ? sidebarPosition === 'left' ? 'lg:pl-[96px]' : 'lg:pr-[96px]'
+            : sidebarPosition === 'left' ? 'lg:pl-[460px]' : 'lg:pr-[460px]'
         }`}
       >
         <div className="w-full max-w-[880px] px-4">
@@ -270,24 +320,67 @@ export default function GuideVideoPage() {
             onClick={() => router.push('/platform/guide')}
             className="flex items-center gap-2 text-slate-400 hover:text-white mb-6"
           >
-            <ArrowLeft className="w-5 h-5" />
+            <ArrowLeft />
             Voltar
           </button>
 
-          <h1 className="text-3xl font-bold text-white mb-4">
-            {currentPlaylistItem?.title || video.title}
+          <h1 className="text-2xl font-bold text-white mb-4">
+            {currentVideo.title}
           </h1>
 
-          <div className="relative aspect-video rounded-2xl overflow-hidden bg-black mb-6">
+          <div className="relative aspect-video rounded-xl overflow-hidden bg-black mb-4">
             <iframe
-              src={currentPlaylistItem?.videoUrl || video.videoUrl}
+              src={currentVideo.videoUrl}
               className="w-full h-full"
               allowFullScreen
             />
           </div>
 
-          <Comments contentId={video.id} contentType="guide" />
+          <div className="flex justify-between items-center mb-6">
+            <div className="text-yellow-400">★★★★★</div>
+            <button
+              onClick={toggleConcluded}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg ${
+                concluded ? 'bg-green-600' : 'bg-slate-700'
+              }`}
+            >
+              <CheckCircle2 />
+              {concluded ? 'Concluída' : 'Concluir'}
+            </button>
+          </div>
+
+          {'description' in currentVideo && (currentVideo as any).description ? (
+            <p className="text-slate-300 mb-8">
+              {(currentVideo as any).description}
+            </p>
+          ) : null}
+
+          <Comments
+            contentId={contentKey}
+          />
         </div>
+      </div>
+
+      {/* MOBILE BOTTOM BAR */}
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-slate-900 border-t border-slate-700 px-4 py-3 flex justify-between">
+        <button onClick={() => goTo(playlistIndex - 1)}>
+          <ArrowLeft />
+        </button>
+
+        <button onClick={() => setMobileDrawer(true)}>
+          <List />
+        </button>
+
+        <button
+          onClick={toggleConcluded}
+          className={concluded ? 'text-green-500' : ''}
+        >
+          <CheckCircle2 />
+        </button>
+
+        <button onClick={() => goTo(playlistIndex + 1)}>
+          <ArrowRight />
+        </button>
       </div>
     </>
   );

@@ -264,26 +264,63 @@ export default function GuideVideoPage() {
   const [sidebarPosition, setSidebarPosition] =
     useState<'left' | 'right'>('left');
   const [mobileDrawer, setMobileDrawer] = useState(false);
+  const [isNavigating, setIsNavigating] = useState(false);
+  const [showToast, setShowToast] = useState(false);
 
   const [concludedVideos, setConcludedVideos] = useState<Set<string>>(new Set());
 
   const contentKey = `${video.id}-${playlistIndex}`;
   const concluded = concludedVideos.has(contentKey);
   const currentVideoId = video.id;
+  const iframeRef = useState<HTMLIFrameElement | null>(null)[0];
+
+  useEffect(() => {
+    // Reset toast quando trocar de vídeo
+    setShowToast(false);
+  }, [contentKey]);
 
   function toggleConcluded() {
     const next = new Set(concludedVideos);
+    const wasNotConcluded = !next.has(contentKey);
     next.has(contentKey) ? next.delete(contentKey) : next.add(contentKey);
     setConcludedVideos(next);
+    
+    if (wasNotConcluded) {
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 3000);
+    }
   }
 
   function goTo(index: number) {
     if (index < 0 || index >= playlist.length) return;
+    setIsNavigating(true);
     router.push(`/platform/guide/${currentVideoId}?playlist=${index}`);
+    setTimeout(() => setIsNavigating(false), 500);
   }
 
   return (
     <>
+      {/* LOADING OVERLAY */}
+      {isNavigating && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
+          <div className="bg-slate-800 rounded-lg p-6 flex items-center gap-3">
+            <div className="w-6 h-6 border-2 border-purple-500 border-t-transparent rounded-full animate-spin" />
+            <span className="text-white font-medium">Carregando...</span>
+          </div>
+        </div>
+      )}
+
+      {/* TOAST CONCLUSÃO */}
+      {showToast && (
+        <div className="fixed right-4 top-20 z-50 bg-green-600 text-white px-6 py-4 rounded-lg shadow-lg flex items-center gap-3 animate-slide-in">
+          <CheckCircle2 className="w-6 h-6" />
+          <div>
+            <p className="font-bold">Aula concluída!</p>
+            <p className="text-sm text-green-100">Parabéns pelo progresso 🎉</p>
+          </div>
+        </div>
+      )}
+
       {!sidebarCollapsed ? (
         <ContentSidebar
           videoId={videoId}
@@ -333,6 +370,25 @@ export default function GuideVideoPage() {
               src={currentVideo.videoUrl}
               className="w-full h-full"
               allowFullScreen
+              onLoad={(e) => {
+                // Tentar detectar quando vídeo está acabando (limitado por CORS)
+                const iframe = e.currentTarget;
+                try {
+                  // Nota: isso só funciona se o vídeo permitir acesso cross-origin
+                  const video = iframe.contentWindow?.document.querySelector('video');
+                  if (video) {
+                    video.addEventListener('timeupdate', () => {
+                      if (video.duration - video.currentTime <= 5 && video.duration - video.currentTime > 4) {
+                        if (!concluded) {
+                          toggleConcluded();
+                        }
+                      }
+                    });
+                  }
+                } catch (e) {
+                  // CORS bloqueado, normal para vídeos externos
+                }
+              }}
             />
           </div>
 

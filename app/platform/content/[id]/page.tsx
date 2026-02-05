@@ -258,7 +258,7 @@ export default function ContentViewPage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6 }}
       >
-        <Comments contentId={content.id} contentType="content" />
+        <Comments contentId={content.id} />
       </motion.div>
     </div>
   );

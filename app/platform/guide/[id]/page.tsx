@@ -123,16 +123,51 @@ function ContentSidebar({
               </button>
 
               {expanded &&
-                item.playlist?.map((p, idx) => (
-                  <Link
-                    key={p.id}
-                    href={`/platform/guide/${item.id}?playlist=${idx}`}
-                    scroll={false}
-                    className="block ml-3 mt-1 px-3 py-1.5 rounded bg-slate-900 hover:bg-slate-800 text-xs text-white"
-                  >
-                    {p.title}
-                  </Link>
-                ))}
+                item.playlist?.map((p, idx) => {
+                  // Se for PDF, fazer download
+                  if (p.type === 'pdf') {
+                    return (
+                      <a
+                        key={p.id}
+                        href={p.url}
+                        download
+                        className="flex items-center gap-2 ml-3 mt-1 px-3 py-1.5 rounded bg-slate-900 hover:bg-slate-800 text-xs text-purple-300 transition-colors"
+                      >
+                        <span>📄</span>
+                        <span>{p.title}</span>
+                      </a>
+                    );
+                  }
+
+                  // Se for link, abrir em nova aba
+                  if (p.type === 'link') {
+                    return (
+                      <a
+                        key={p.id}
+                        href={p.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 ml-3 mt-1 px-3 py-1.5 rounded bg-slate-900 hover:bg-slate-800 text-xs text-purple-300 transition-colors"
+                      >
+                        <span>🔗</span>
+                        <span>{p.title}</span>
+                      </a>
+                    );
+                  }
+
+                  // Se for vídeo, navegar
+                  return (
+                    <Link
+                      key={p.id}
+                      href={`/platform/guide/${item.id}?playlist=${idx}`}
+                      scroll={false}
+                      className="flex items-center gap-2 ml-3 mt-1 px-3 py-1.5 rounded bg-slate-900 hover:bg-slate-800 text-xs text-white transition-colors"
+                    >
+                      <span>▶</span>
+                      <span>{p.title}</span>
+                    </Link>
+                  );
+                })}
             </div>
           );
         })}
@@ -194,17 +229,54 @@ function MobileDrawer({
               </button>
 
               {expanded &&
-                item.playlist?.map((p, idx) => (
-                  <Link
-                    key={p.id}
-                    href={`/platform/guide/${item.id}?playlist=${idx}`}
-                    onClick={onClose}
-                    scroll={false}
-                    className="block ml-3 mt-1 px-3 py-1.5 rounded bg-slate-900 hover:bg-slate-800 text-xs text-white"
-                  >
-                    {p.title}
-                  </Link>
-                ))}
+                item.playlist?.map((p, idx) => {
+                  // Se for PDF, fazer download
+                  if (p.type === 'pdf') {
+                    return (
+                      <a
+                        key={p.id}
+                        href={p.url}
+                        download
+                        onClick={onClose}
+                        className="flex items-center gap-2 ml-3 mt-1 px-3 py-1.5 rounded bg-slate-900 hover:bg-slate-800 text-xs text-purple-300 transition-colors"
+                      >
+                        <span>📄</span>
+                        <span>{p.title}</span>
+                      </a>
+                    );
+                  }
+
+                  // Se for link, abrir em nova aba
+                  if (p.type === 'link') {
+                    return (
+                      <a
+                        key={p.id}
+                        href={p.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={onClose}
+                        className="flex items-center gap-2 ml-3 mt-1 px-3 py-1.5 rounded bg-slate-900 hover:bg-slate-800 text-xs text-purple-300 transition-colors"
+                      >
+                        <span>🔗</span>
+                        <span>{p.title}</span>
+                      </a>
+                    );
+                  }
+
+                  // Se for vídeo, navegar
+                  return (
+                    <Link
+                      key={p.id}
+                      href={`/platform/guide/${item.id}?playlist=${idx}`}
+                      onClick={onClose}
+                      scroll={false}
+                      className="flex items-center gap-2 ml-3 mt-1 px-3 py-1.5 rounded bg-slate-900 hover:bg-slate-800 text-xs text-white transition-colors"
+                    >
+                      <span>▶</span>
+                      <span>{p.title}</span>
+                    </Link>
+                  );
+                })}
             </div>
           );
         })}
@@ -361,6 +433,12 @@ export default function GuideVideoPage() {
             Voltar
           </button>
 
+          {video.categoryLabel && (
+            <p className="text-purple-400 text-sm font-semibold mb-2 uppercase tracking-wider">
+              {video.categoryLabel}
+            </p>
+          )}
+
           <h1 className="text-2xl font-bold text-white mb-4">
             {currentVideo.title}
           </h1>
@@ -410,6 +488,51 @@ export default function GuideVideoPage() {
               {(currentVideo as any).description}
             </p>
           ) : null}
+
+          {video.fullDescription && (
+            <div className="bg-slate-800/50 rounded-lg p-6 mb-8">
+              <h2 className="text-xl font-bold text-white mb-3">Sobre esta aula</h2>
+              <p className="text-slate-300 leading-relaxed">{video.fullDescription}</p>
+            </div>
+          )}
+
+          {video.materials && video.materials.length > 0 && (
+            <div className="bg-slate-800/50 rounded-lg p-6 mb-8">
+              <h2 className="text-xl font-bold text-white mb-4">Materiais Complementares</h2>
+              <div className="space-y-3">
+                {video.materials.map((material) => (
+                  <a
+                    key={material.id}
+                    href={material.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-start gap-4 p-4 bg-slate-700/50 rounded-lg hover:bg-slate-700 transition-colors group"
+                  >
+                    <div className="flex-shrink-0 w-12 h-12 bg-purple-600/20 rounded-lg flex items-center justify-center">
+                      {material.type === 'pdf' ? (
+                        <svg className="w-6 h-6 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                        </svg>
+                      ) : (
+                        <svg className="w-6 h-6 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                        </svg>
+                      )}
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-white font-semibold group-hover:text-purple-400 transition-colors">
+                        {material.title}
+                      </h3>
+                      <p className="text-slate-400 text-sm">{material.subtitle}</p>
+                    </div>
+                    <svg className="w-5 h-5 text-slate-400 group-hover:text-purple-400 transition-colors flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
 
           <Comments
             contentId={contentKey}

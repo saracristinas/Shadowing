@@ -5,18 +5,27 @@ export const inicioVideos: GuideVideo[] = [
     id: '1',
     title: 'Bem-vindo à Plataforma',
     description: 'Conheça a interface e recursos principais',
-    fullDescription: 'Neste vídeo, você vai conhecer todos os recursos da plataforma de shadowing. Vamos explorar juntos a biblioteca de conteúdos, o sistema de níveis, a comunidade, e como acompanhar seu progresso. Ao final, você estará pronto para começar seus estudos!',
+    fullDescription: 'Bem-vindo à nossa plataforma de aprendizado de idiomas! Aqui você terá acesso a uma metodologia comprovada que vai acelerar seu processo de aprendizado. Nossa plataforma oferece conteúdos organizados por níveis (A1, A2, B1, B2), sistema de acompanhamento de progresso, comunidade de estudantes, e materiais complementares. Explore todos os recursos disponíveis e comece sua jornada rumo à fluência!',
     duration: '5:30',
     thumbnail: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800',
     videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
     category: 'inicio',
     isNew: true,
-    materials: [
+    playlist: [
       {
-        id: '1',
+        id: '1-video',
+        title: 'Vídeo de Boas-vindas',
+        type: 'video',
+        duration: '5:30',
+        thumbnail: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800',
+        videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+        completed: false
+      },
+      {
+        id: '1-link',
         title: 'Teste de nível - Inglês geral',
-        subtitle: 'Leitura Complementar',
-        type: 'reading',
+        subtitle: 'Avaliação Online • Cambridge English',
+        type: 'link',
         url: 'https://www.cambridgeenglish.org/br/test-your-english/general-english/'
       }
     ]
@@ -25,28 +34,35 @@ export const inicioVideos: GuideVideo[] = [
     id: '2',
     title: 'O que é Shadowing?',
     description: 'Entenda o método e como ele funciona',
-    fullDescription: 'O shadowing é uma técnica poderosa de aprendizado de idiomas. Neste vídeo, você vai entender o que é o método, como praticá-lo corretamente, e por que ele é tão eficaz para melhorar sua pronúncia, fluência e compreensão auditiva.',
+    fullDescription: 'O Shadowing é uma técnica de aprendizado de idiomas que consiste em repetir em voz alta, simultaneamente, o que você está ouvindo. Este método trabalha simultaneamente a compreensão auditiva, pronúncia, entonação e ritmo natural do idioma. É utilizado por poliglota e profissionais de idiomas ao redor do mundo. Nesta seção, você encontrará detalhes completos sobre como aplicar o método corretamente, dicas práticas, e orientações passo a passo para maximizar seus resultados.',
     duration: '8:15',
     thumbnail: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800',
     videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
     category: 'inicio',
     isNew: true,
-    materials: [
+    playlist: [
       {
-        id: '2',
-        title: 'MÉTODO SHADOWING.pdf',
-        subtitle: 'PDF - 2.42 MB',
-        type: 'pdf',
-        size: '2.42 MB',
-        url: '/files/MÉTODO SHADOWING.pdf'
+        id: '2-video',
+        title: 'Vídeo Explicativo',
+        type: 'video',
+        duration: '8:15',
+        thumbnail: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800',
+        videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+        completed: false
       },
       {
-        id: '3',
-        title: 'MÉTODO SHADOWING - SPANISH.pdf',
-        subtitle: 'PDF - 2.15 MB',
+        id: '2-pdf-pt',
+        title: 'MÉTODO SHADOWING (Português)',
+        subtitle: 'Detalhes da Metodologia • PDF • 2.42 MB',
         type: 'pdf',
-        size: '2.15 MB',
-        url: '/files/MÉTODO SHADOWING - SPANISH.pdf'
+        url: '/files/metodo-shadowing.pdf'
+      },
+      {
+        id: '2-pdf-es',
+        title: 'MÉTODO SHADOWING (Espanhol)',
+        subtitle: 'Detalles del Método • PDF • 2.15 MB',
+        type: 'pdf',
+        url: '/files/metodo-shadowing-spanish.pdf'
       }
     ]
   },

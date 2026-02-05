@@ -10,6 +10,7 @@ export const b1Videos: GuideVideo[] = [
     thumbnail: '/levels/level-b1.png',
     videoUrl: 'https://www.youtube.com/embed/9o6wnmI_6bg',
     category: 'niveis',
+    categoryLabel: 'SHADOWING NÍVEL B1',
     playlist: [
       {
         id: '1',

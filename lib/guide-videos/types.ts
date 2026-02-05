@@ -5,7 +5,8 @@ export interface GuideVideo {
   duration: string;
   thumbnail: string;
   videoUrl: string;
-  category: 'inicio' | 'niveis' | 'recursos' | 'dicas';
+  category: 'inicio' | 'niveis' | 'recursos' | 'dicas' | 'celebridades';
+  categoryLabel?: string;
   isNew?: boolean;
   watched?: boolean;
   fullDescription?: string;
@@ -20,9 +21,12 @@ export interface GuideVideo {
   playlist?: Array<{
     id: string;
     title: string;
-    duration: string;
-    thumbnail: string;
-    videoUrl: string;
+    duration?: string;
+    thumbnail?: string;
+    videoUrl?: string;
     completed?: boolean;
+    type?: 'video' | 'pdf' | 'link';
+    url?: string;
+    subtitle?: string;
   }>;
 }

@@ -22,9 +22,8 @@ import {
 
 const menuItems = [
   { id: 'home', label: 'Home', icon: Home, href: '/platform' },
-  { id: 'guide', label: 'Guia', icon: GraduationCap, href: '/platform/guide' },
-  { id: 'library', label: 'Biblioteca', icon: BookOpen, href: '/platform/library' },
-  { id: 'levels', label: 'Níveis', icon: Layers, href: '/platform/levels' },
+  { id: 'guide', label: 'Guia de Estudos', icon: GraduationCap, href: '/platform/guide' },
+  { id: 'notes', label: 'Anotações', icon: BookMarked, href: '/platform/notes' },
   { id: 'community', label: 'Comunidade', icon: Users, href: '/platform/community' },
   { id: 'progress', label: 'Progresso', icon: BarChart3, href: '/platform/progress' },
 ];

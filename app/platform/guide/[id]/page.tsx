@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import Comments from '@/components/content/Comments';
+import NotesInput from '@/components/content/NotesInput';
 import { allVideos } from '@/lib/guide-videos';
 
 /* ===================== DESKTOP SIDEBAR ===================== */
@@ -533,6 +534,12 @@ export default function GuideVideoPage() {
               </div>
             </div>
           )}
+
+          <NotesInput
+            contentId={contentKey}
+            contentTitle={currentVideo.title}
+            contentType="guide"
+          />
 
           <Comments
             contentId={contentKey}

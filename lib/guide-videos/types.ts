@@ -5,7 +5,7 @@ export interface GuideVideo {
   duration: string;
   thumbnail: string;
   videoUrl: string;
-  category: 'inicio' | 'niveis' | 'recursos' | 'dicas' | 'celebridades';
+  category: 'inicio' | 'niveis' | 'recursos' | 'dicas' | 'celebridades' | 'ingles-americano' | 'filmes';
   categoryLabel?: string;
   isNew?: boolean;
   watched?: boolean;

@@ -7,6 +7,8 @@ import { a2Videos } from './niveis/a2';
 import { b1Videos } from './niveis/b1';
 import { b2Videos } from './niveis/b2';
 import { celebridadesVideos } from './celebridades';
+import { inglesAmericanoVideos } from './ingles-americano';
+import { filmesVideos } from './filmes';
 
 // Exporta todos os vídeos combinados
 export const allVideos: GuideVideo[] = [
@@ -18,6 +20,8 @@ export const allVideos: GuideVideo[] = [
   ...b1Videos,
   ...b2Videos,
   ...celebridadesVideos,
+  ...inglesAmericanoVideos,
+  ...filmesVideos,
 ];
 
 // Exporta por categoria para facilitar uso específico
@@ -30,6 +34,8 @@ export {
   b1Videos,
   b2Videos,
   celebridadesVideos,
+  inglesAmericanoVideos,
+  filmesVideos,
 };
 
 // Exporta o tipo
